@@ -1,0 +1,109 @@
+' ' Estudo de caso baseado no artigo de modelagem de sistemas industriais, Palazzo e Edelweizz (1998), apud Lutherer E. et al., 1994. 
+' ' O estudo representa uma fábrica de concreto que inclui vendas, escritório e a planta industrial. 
+' ' A planta é composta de vários receptáculos de armazenagem de cimento, areia, cascalho e água; um misturador para preparação do concreto; duas balanças para pesar os componentes;
+' ' uma válvula de medição de componentes; controle de descarga de água; duas esteiras de transporte para levar os ingredientes sólidos ao misturador.
+' ' Os clientes preenchem uma ordem de pedido entregue pelo representante com o tipo e quantidade de concreto para entrega em um ou mais dias pela transportadora da empresa.
+' ' O departamento de vendas escalona a ordem e eventualmente encaminha a indústria para o encarregado de produção.
+' ' A indústria providência a execução do pedido, através da área de produção e de matéria prima.
+' ' A produção executa a ordem solicitando materiais que são entregues no local pelo encarregado do almoxarifado e estocagem.
+' ' O operador das máquinas executa os controles de fabricação tendo como auxiliares os operários responsáveis pela mistura dos componentes e pelo funcionário encarregado do controle de fluxo de trabalho.
+' ' Caso algum produto da matéria prima fique abaixo do nível de segurança, o encarregado da produção emite ordem para o departamento de compras providenciar o pedido da mercadoria que após a entrega é verificado pelo setor de recebimento e distribuição se está entregue conforme foi feito o pedido.
+' ' Após a fabricação, o produto é entregue na construção e o cliente efetua o pagamento que é recebido pelo departamento financeiro da indústria.
+
+
+' @startuml
+' left to right direction
+
+'   actor "Operador de Válvula de Medição" as ov
+'   actor Representante as rep
+'   actor "Operador de Mistura" as om
+'   actor Clientes as Cl
+'   actor Transportadora as trans
+'   actor "Departamento de Vendas" as dv
+'   actor "Encarregado de Produção" as ep
+
+' package Sistema {
+'   usecase "Preencher formulario" as UC1
+'   usecase "Analisar solicitacao" as UC2
+'   usecase "Enviar comunicado de negativa" as UC3
+'   usecase "Enviar solicitacao ao supervisor" as UC4
+'   usecase "Negar pedido" as UC5
+'   usecase "Gerar tramites administrativos" as UC6
+'   usecase "Comunicar aprovacao" as UC7
+'   usecase "Aprovar pedido" as UC8
+' }
+' sa -- UC1
+' ch -- UC2
+' ch -- UC3
+' ch -- UC4
+' sp -- UC5
+' ch -- UC8
+' sp -- UC8
+' sr -- UC6
+' sr -- UC7
+' ch -- UC5
+' UC1 -.> UC2 : include
+' UC8 -.> UC6 : include
+' UC6 -.> UC7 : include
+' UC2 -.> UC8 : extend
+' UC4 -.> UC8 : extend
+' UC5 -.> UC3 : include
+' UC2 -.> UC4 : extend
+' UC4 -.> UC5 : extend
+
+' @enduml
+
+@startuml
+left to right direction
+title = Fabrica de Concreto
+  actor Clientes as Cl
+  actor Representante as rep
+  actor Transportadora as trans
+  actor "Departamento de Vendas" as dv
+  actor "Encarregado de Produção" as ep
+  actor "Operador de Válvula de Medição" as ov
+  actor "Operador de Mistura" as om
+  actor "Encarregado do Almoxarifado e Estocagem" as ea
+  actor "Setor de Recebimento e Distribuição" as rd
+  actor "Departamento Financeiro" as df
+
+package "Sistema de Fabricação de Concreto" {
+  usecase "Entregar ordem de Pedido" as UC1
+  usecase "Preencher ordem de Pedido" as UC2
+  usecase "Escalonar ordem" as UC3
+  usecase "Encaminhar a indústria para o encarregado de produção" as UC4
+  usecase "Executar Pedido" as UC5
+  usecase "Solicitar Materiais" as UC6
+  usecase "Entregar Materiais" as UC7
+  usecase "Executar controles de fabricação" as UC8
+  usecase "Misturar componentes" as UC9
+  usecase "Controlar o fluxo do trabalho" as UC10
+  usecase "Emitir ordem para providenciar o pedido da mercadoria" as UC11
+  usecase "Verificar se está entregue conforme foi feito o pedido" as UC12
+  usecase "Entregar produto na construção" as UC13
+  usecase "Efetuar pagamento" as UC14
+  usecase "Receber pagamento" as UC15
+}
+
+rep -- UC1
+Cl -- UC11
+ep -- UC4
+rep -- UC2
+om -- UC9
+df -- UC15
+rep -- UC10
+trans -- UC13
+
+
+
+
+UC8 -.> UC6 : include
+UC6 -.> UC7 : include
+UC2 -.> UC8 : extend
+UC4 -.> UC8 : extend
+UC5 -.> UC3 : include
+UC2 -.> UC4 : extend
+UC4 -.> UC5 : extend
+UC11 -.> UC14 : include
+
+@enduml
